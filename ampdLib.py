@@ -8,18 +8,18 @@ import numpy as np
 
 # AMPD function
 def ampd(sigInput):
-"""Find the peaks in the signal with the AMPD algorithm
+	"""Find the peaks in the signal with the AMPD algorithm
 
-	Parameters
-	----------
-	sigInput: ndarray
-		The 1D signal given as input to the algorithm
+		Parameters
+		----------
+		sigInput: ndarray
+			The 1D signal given as input to the algorithm
 
-    Returns
-    -------
-    pks: ndarray
-        The ordered array of peaks found in sigInput
-"""
+		Returns
+		-------
+		pks: ndarray
+			The ordered array of peaks found in sigInput
+	"""
 
 	sigInput = sigInput.reshape(len(sigInput), 1)
 		
@@ -58,20 +58,20 @@ def ampd(sigInput):
 
 # Fast AMPD		
 def ampdFast(sigInput, order):
-"""A slightly faster version of AMPD which divides the signal in 'order' windows
+	"""A slightly faster version of AMPD which divides the signal in 'order' windows
 
-	Parameters
-	----------
-	sigInput: ndarray
-		The 1D signal given as input to the algorithm
-	order: int
-		The number of windows in which sigInput is divided
+		Parameters
+		----------
+		sigInput: ndarray
+			The 1D signal given as input to the algorithm
+		order: int
+			The number of windows in which sigInput is divided
 
-    Returns
-    -------
-    pks: ndarray
-        The ordered array of peaks found in sigInput 
-"""
+		Returns
+		-------
+		pks: ndarray
+			The ordered array of peaks found in sigInput 
+	"""
 
 	# Check if order is valid (perfectly separable)
 	if(len(sigInput)%order != 0):
