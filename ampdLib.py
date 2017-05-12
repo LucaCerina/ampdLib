@@ -8,7 +8,12 @@ import numpy as np
 
 # AMPD function
 def ampd(sigInput):
-	"""Find the peaks in the signal with the AMPD algorithm
+	"""Find the peaks in the signal with the AMPD algorithm.
+	
+		Original implementation by Felix Scholkmann et al. in
+		"An Efficient Algorithm for Automatic Peak Detection in 
+		Noisy Periodic and Quasi-Periodic Signals", Algorithms 2012,
+		 5, 588-603
 
 		Parameters
 		----------
