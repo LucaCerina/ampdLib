@@ -52,7 +52,7 @@ def ampd(sigInput):
 	
 	# Find minima				
 	G = np.sum(LSM, 1)
-	l = np.where(G == G.min())[0]
+	l = np.where(G == G.min())[0][0]
 	
 	LSM = LSM[0:l, :]
 	
