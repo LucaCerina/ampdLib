@@ -45,14 +45,16 @@ def ampd(sigInput):
 	
 	# Local minima extraction
 	for k in np.arange(1, L):
-		for i in range(k+1, N-k):
-			if((sigInput[i-1, 0] > sigInput[i-k-1, 0]) 
-			& (sigInput[i-1, 0] > sigInput[i+k-1, 0])):
-				LSM[k-1, i-1] = 0
+		locMax = np.zeros(N, dtype=bool)
+		mask = (sigInput[k:N - k - 1] > sigInput[0: N - 2 * k - 1]) & (sigInput[k:N - k - 1] > sigInput[2 * k: N - 1])
+		mask = mask.flatten()
+
+		locMax[k:N-k-1] = mask
+		LSM[k - 1, locMax] = 0
 	
 	# Find minima				
 	G = np.sum(LSM, 1)
-	l = np.where(G == G.min())[0]
+	l = np.where(G == G.min())[0][0]
 	
 	LSM = LSM[0:l, :]
 	
