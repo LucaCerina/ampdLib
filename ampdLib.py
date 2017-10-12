@@ -25,8 +25,6 @@ def ampd(sigInput):
 		pks: ndarray
 			The ordered array of peaks found in sigInput
 	"""
-
-	sigInput = sigInput.reshape(len(sigInput), 1)
 		
 	# Create preprocessing linear fit	
 	sigTime = np.arange(0, len(sigInput))
