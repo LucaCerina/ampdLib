@@ -25,8 +25,6 @@ def ampd(sigInput):
 		pks: ndarray
 			The ordered array of peaks found in sigInput
 	"""
-
-	sigInput = sigInput.reshape(len(sigInput), 1)
 		
 	# Create preprocessing linear fit	
 	sigTime = np.arange(0, len(sigInput))
@@ -46,7 +44,7 @@ def ampd(sigInput):
 	# Local minima extraction
 	for k in np.arange(1, L):
 		locMax = np.zeros(N, dtype=bool)
-		mask = (sigInput[k:N - k - 1] > sigInput[0: N - 2 * k - 1]) & (sigInput[k:N - k - 1] > sigInput[2 * k: N - 1])
+		mask = (dtrSignal[k:N - k - 1] > dtrSignal[0: N - 2 * k - 1]) & (dtrSignal[k:N - k - 1] > dtrSignal[2 * k: N - 1])
 		mask = mask.flatten()
 
 		locMax[k:N-k-1] = mask
