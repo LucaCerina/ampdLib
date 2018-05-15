@@ -7,7 +7,7 @@ __email__       = "luca.cerina@polimi.it"
 import numpy as np
 
 # AMPD function
-def ampd(sigInput):
+def ampd(sigInput, maxWindow=None):
 	"""Find the peaks in the signal with the AMPD algorithm.
 	
 		Original implementation by Felix Scholkmann et al. in
@@ -19,6 +19,8 @@ def ampd(sigInput):
 		----------
 		sigInput: ndarray
 			The 1D signal given as input to the algorithm
+		maxWindow: int
+			Optional size of max window to use
 
 		Returns
 		-------
@@ -36,8 +38,10 @@ def ampd(sigInput):
 	dtrSignal = sigInput - sigFit
 	
 	N = len(dtrSignal)
-	L = int(np.ceil(N / 2.0)) - 1
-	
+	if maxWindow is None:
+		L = int(np.ceil(N / 2.0)) - 1
+	else:
+		L = maxWindow	
 	# Generate random matrix
 	LSM = np.random.uniform(1.0, 2.0, size = (L,N)) # uniform + alpha = 1
 	
