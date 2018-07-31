@@ -39,7 +39,7 @@ def ampd(sigInput):
 	L = int(np.ceil(N / 2.0)) - 1
 	
 	# Generate random matrix
-	LSM = np.random.uniform(1.0, 2.0, size = (L,N)) # uniform + alpha = 1
+	LSM = np.random.random([L,N])+1 # uniform + alpha = 1
 	
 	# Local minima extraction
 	for k in np.arange(1, L):
@@ -56,7 +56,7 @@ def ampd(sigInput):
 	
 	LSM = LSM[0:l, :]
 	
-	S = np.std(LSM, 0)
+	S = np.sum(LSM, 0)
 
 	pks = np.flatnonzero(S == 0)
 	return pks

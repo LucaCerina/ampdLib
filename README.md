@@ -12,4 +12,7 @@ Algorithms 2012, 5, 588-603.
 ### Python required dependencies
 - Python > 3
 - Numpy
+- Scipy for tests
 
+### Tests
+The tests folder contains an ECG signal with annotated peaks in numpy format.
