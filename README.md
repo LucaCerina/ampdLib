@@ -15,4 +15,4 @@ Algorithms 2012, 5, 588-603.
 - Scipy for tests
 
 ### Tests
-The tests folder contains an ECG signal with annotated peaks in numpy format.
+The tests folder contains an ECG signal with annotated peaks in matlab format.
