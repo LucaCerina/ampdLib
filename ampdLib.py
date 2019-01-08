@@ -35,10 +35,9 @@ def ampd(sigInput, LSMlimit = 1):
 		
 	# Create preprocessing linear fit	
 	sigTime = np.arange(0, len(sigInput))
-	fitPoly = np.polyfit(sigTime, sigInput, 1)
 	
 	# Detrend
-	dtrSignal = (sigInput - np.polyval(fitPoly, sigTime)).astype(float)
+	dtrSignal = (sigInput - np.polyval(np.polyfit(sigTime, sigInput, 1), sigTime)).astype(float)
 	
 	N = len(dtrSignal)
 	L = int(np.ceil(N*LSMlimit / 2.0)) - 1
@@ -47,14 +46,10 @@ def ampd(sigInput, LSMlimit = 1):
 	LSM = np.ones([L,N], dtype='uint8')
 	
 	# Local minima extraction
-	for k in np.arange(1, L):
+	for k in range(1, L):
 		LSM[k - 1, np.where((dtrSignal[k:N - k - 1] > dtrSignal[0: N - 2 * k - 1]) & (dtrSignal[k:N - k - 1] > dtrSignal[2 * k: N - 1]))[0]+k] = 0
 	
-	# Find minima				
-	G = np.sum(LSM, 1)
-	l = np.where(G == G.min())[0][0]
-
-	pks = np.where(np.sum(LSM[0:l, :], 0)==0)[0]
+	pks = np.where(np.sum(LSM[0:np.argmin(np.sum(LSM, 1)), :], 0)==0)[0]
 	return pks
 
 
