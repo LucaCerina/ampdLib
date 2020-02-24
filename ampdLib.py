@@ -79,10 +79,12 @@ def ampdFast(sigInput, order, LSMlimit = 1, verbose = False):
 
 	# Check if order is valid (perfectly separable)
 	if(len(sigInput)%order != 0):
-		print("AMPD: Invalid order, decreasing order")
+		if verbose:
+			print("AMPD: Invalid order, decreasing order")
 		while(len(sigInput)%order != 0):
 			order -= 1
-		print("AMPD: Using order " + str(order))
+		if verbose:
+			print("AMPD: Using order " + str(order))
 
 	N = int(len(sigInput) / order / 2)
 
