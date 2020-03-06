@@ -16,3 +16,11 @@ Algorithms 2012, 5, 588-603.
 
 ### Tests
 The tests folder contains an ECG signal with annotated peaks in matlab format.
+
+#### Contribution
+If you feel generous and want to show some extra appreciation:
+
+[![Buy me a coffee][buymeacoffee-shield]][buymeacoffee]
+
+[buymeacoffee]: https://www.buymeacoffee.com/u2Vb3kO
+[buymeacoffee-shield]: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
