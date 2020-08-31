@@ -4,6 +4,11 @@ __copyright__   = "Copyright 2017, Luca Cerina"
 __credits__     = ["Jeremy Karst"]
 __email__       = "luca.cerina@polimi.it"
 
+"""
+This module implements automatic multiscale-based peak detection (AMPD) algorithm as in:
+An Efficient Algorithm for Automatic Peak Detection in Noisy Periodic and Quasi-Periodic Signals,
+by Felix Scholkmann, Jens Boss and Martin Wolf, Algorithms 2012, 5, 588-603.
+"""
 
 import numpy as np
 
