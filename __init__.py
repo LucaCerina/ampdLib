@@ -1,3 +1,3 @@
-from .ampdLib import ampd, ampdFast
+from .ampdLib import ampd, ampd_fast, ampd_fast_sub
 
-__version__ = "1.1.0"
+__version__ = "1.1.1"
