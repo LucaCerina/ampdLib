@@ -18,7 +18,7 @@ if __name__ == "__main__":
     N = 30000
     input_data = real_data['ecg_signal'][0:N,0].flatten()
     tStart = perf_counter()
-    ampd_peaks = ampdLib.ampd_v2(input_data)
+    ampd_peaks = ampdLib.ampd_fast(input_data)
     tEnd = perf_counter()
     print("Samples: {}".format(N))
     print("Peaks found in: {} seconds".format(tEnd-tStart))

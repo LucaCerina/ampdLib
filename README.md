@@ -14,6 +14,9 @@ Algorithms 2012, 5, 588-603.
 - Numpy
 - Scipy for tests
 
+### Installation
+The library can be easily installed with setuptools support using `pip install .`
+
 ### Tests
 The tests folder contains an ECG signal with annotated peaks in matlab format.
 
