@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__      = "Luca Cerina"
-__copyright__   = "Copyright 2018, Luca Cerina"
-__email__       = "luca.cerina@polimi.it"
+__copyright__   = "Copyright 2022, Luca Cerina"
+__email__       = "lccerina@gmail.com"
 
 import sys
 from time import perf_counter
