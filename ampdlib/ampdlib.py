@@ -144,7 +144,7 @@ def ampd_fast(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_
 
 	# Define iterations
 	if window_length < sig_input.shape[0]:
-		iterations = (sig_input.shape[0] - window_length) / hop_length + 1
+		iterations = int((sig_input.shape[0] - window_length) // hop_length) + 1
 		if hop_length is None:
 			hop_length = window_length
 	else:
