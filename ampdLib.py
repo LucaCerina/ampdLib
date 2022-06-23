@@ -13,7 +13,7 @@ by Felix Scholkmann, Jens Boss and Martin Wolf, Algorithms 2012, 5, 588-603.
 import numpy as np
 
 # AMPD function
-def ampd(sig_input, lsm_limit = 1):
+def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
 	"""Find the peaks in the signal with the AMPD algorithm.
 	
 		Original implementation by Felix Scholkmann et al. in
@@ -59,7 +59,7 @@ def ampd(sig_input, lsm_limit = 1):
 
 
 # Fast AMPD		
-def ampd_fast_sub(sig_input, order, lsm_limit = 1, verbose = False):
+def ampd_fast_sub(sig_input:np.ndarray, order:int, lsm_limit:float = 1, verbose:bool = False) -> np.ndarray:
 	"""A slightly faster version of AMPD which divides the signal in 'order' windows
 
 		Parameters
