@@ -40,7 +40,6 @@ from scipy.io import loadmat
 
 class TestLibrary(unittest.TestCase):
     def setUp(self) -> None:
-        print("Loading data")
         self.test_data = loadmat('data.mat')
         N = 30000
         self.input_data = self.test_data['ecg_signal'][0:N,0].flatten()
@@ -49,6 +48,11 @@ class TestLibrary(unittest.TestCase):
 
     def test_detection(self):
         ampd_peaks = ampdlib.ampd_fast(self.input_data, window_length=2000, hop_length=1000)
+        error_peaks = np.sum((ampd_peaks - self.real_peaks[0:ampd_peaks.shape[0]]) != 0)
+        self.assertEqual(error_peaks, 0)
+
+    def test_no_hop_length(self):
+        ampd_peaks = ampdlib.ampd_fast(self.input_data, window_length=2000)
         error_peaks = np.sum((ampd_peaks - self.real_peaks[0:ampd_peaks.shape[0]]) != 0)
         self.assertEqual(error_peaks, 0)
 
