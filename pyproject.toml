@@ -21,7 +21,9 @@ keywords = ['peak detection', 'signal processing', 'quasi-periodic signals']
 dependencies = [
     "numpy"
 ]
-optional-dependencies = [
+
+[project.optional-dependencies]
+tests = [
     "scipy"
 ]
 
