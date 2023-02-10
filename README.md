@@ -1,5 +1,5 @@
-README.md rev. 09 May 2017 by Luca Cerina.
-Copyright (c) 2017 Luca Cerina.
+README.md rev. 10 Feb 2023 by Luca Cerina.
+Copyright (c) 2023 Luca Cerina.
 Distributed under the Apache 2.0 License in the accompanying file LICENSE.
 
 # Automatic Multiscale-based Peak Detection (AMPD)
@@ -15,7 +15,7 @@ Algorithms 2012, 5, 588-603.
 - Scipy for tests
 
 ### Installation
-The library can be easily installed with setuptools support using `pip install .`
+The library can be easily installed with setuptools support using `pip install .` or via PyPI with `pip install ampdlib`
 
 ### Tests
 The tests folder contains an ECG signal with annotated peaks in matlab format.
