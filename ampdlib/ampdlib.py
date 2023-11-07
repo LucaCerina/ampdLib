@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__      = "Luca Cerina"
-__copyright__   = "Copyright 2022, Luca Cerina"
+__copyright__   = "Copyright 2023, Luca Cerina"
 __credits__     = ["Jeremy Karst", "Steffen Kaiser"]
 __email__       = "lccerina@gmail.com"
 
