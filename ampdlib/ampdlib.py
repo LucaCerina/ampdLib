@@ -39,7 +39,9 @@ def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
 	"""
 
 	# Assertion checks
-	assert 0 < lsm_limit <= 1, 'lsm_limit should be comprised between 0 and 1' 
+	N = len(sig_input)
+	assert 0 < lsm_limit <= 1, 'lsm_limit should be comprised between 0 and 1'
+	assert (int(np.ceil(N*lsm_limit / 2.0)) - 1) > 2, f"lsm_limit is too low for given length {N:d}, recommended lsm_limit > {6/N:f}" 
 		
 	# Create preprocessing linear fit	
 	sig_time = np.arange(0, len(sig_input))
@@ -56,7 +58,7 @@ def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
 	# Local minima extraction
 	for k in range(1, L):
 		LSM[k - 1, np.where((dtr_signal[k:N - k - 1] > dtr_signal[0: N - 2 * k - 1]) & (dtr_signal[k:N - k - 1] > dtr_signal[2 * k: N - 1]))[0]+k] = 0
-	
+	print(LSM.shape)
 	pks = np.where(np.sum(LSM[0:np.argmin(np.sum(LSM, 1)), :], 0)==0)[0]
 	return pks
 

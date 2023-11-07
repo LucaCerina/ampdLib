@@ -60,6 +60,8 @@ class TestLibrary(unittest.TestCase):
         with self.assertRaises(AssertionError):
             ampdlib.ampd(self.input_data, lsm_limit=-1)
         with self.assertRaises(AssertionError):
+            ampdlib.ampd(self.input_data, lsm_limit=6/len(self.input_data)-1e-8)
+        with self.assertRaises(AssertionError):
             ampdlib.ampd(self.input_data, lsm_limit=2)
         with self.assertRaises(AssertionError):
             ampdlib.ampd_fast(self.input_data, 2000, -1)
