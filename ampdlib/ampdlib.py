@@ -10,10 +10,47 @@ An Efficient Algorithm for Automatic Peak Detection in Noisy Periodic and Quasi-
 by Felix Scholkmann, Jens Boss and Martin Wolf, Algorithms 2012, 5, 588-603.
 """
 
+from typing import Any, Tuple
 import warnings
 
 import numpy as np
 
+def get_optimal_size(N:int, maximum_scale:int=None, lsm_limit:float=None, fs:float=None) -> Tuple[int, float, Any]:
+	"""Helper function, for many use cases a lsm_limit of 1 may be excessive, particularly for signals with a large size.
+	   Calculate scale observable (in samples) given lsm_limit or almost optimal lsm_limit given necessary scale. At least one parameter is required
+	   Return also scale in seconds if fs is passed as optional parameter.
+
+		Parameters
+		----------
+		N (int): Length of the input
+		maximum_scale (int, optional): Length in samples to be captured by AMPD. Defaults to None.
+		lsm_limit (float, optional): Scale of local maxima search (see ampd function for details). Defaults to None.
+		fs (float, optional): Sampling frequency of the signal of interest. Defaults to None.
+
+		Returns
+		-------
+		int: maximum scale achievable
+		float: minimum lsm_limit for maximum scale
+		float: time scale. None if fs is None
+	"""
+	assert (maximum_scale is None) ^ (lsm_limit is None), "Maximum scale or lsm limit is required as a parameter"
+	assert (lsm_limit is None) or (0 < lsm_limit <= 1), 'lsm_limit should be comprised between 0 and 1'
+	assert (maximum_scale is None) or 0 < maximum_scale <= N, 'maximum_scale should be comprised between 0 and N'
+	assert (fs is None) or fs > 0
+
+	if maximum_scale is None:
+		_maximum_scale = np.ceil(lsm_limit*N)
+		_lsm_limit = lsm_limit
+	else:
+		_maximum_scale = maximum_scale
+		_lsm_limit = maximum_scale/N
+	
+	if (int(np.ceil(N*_lsm_limit / 2.0)) - 1) <= 2:
+		warnings.warn(f"lsm_limit of {_lsm_limit} for scale {_maximum_scale:d} may be too low for signals of size {N:d}. Recommended at least {6/N}.")
+
+	time_scale = _maximum_scale / fs if fs else None
+
+	return _maximum_scale, _lsm_limit, time_scale
 
 # AMPD function
 def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
@@ -61,6 +98,7 @@ def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
 	# Local minima extraction
 	for k in range(1, L):
 		LSM[k - 1, np.where((dtr_signal[k:N - k - 1] > dtr_signal[0: N - 2 * k - 1]) & (dtr_signal[k:N - k - 1] > dtr_signal[2 * k: N - 1]))[0]+k] = 0
+	print(LSM.shape)
 	pks = np.where(np.sum(LSM[0:np.argmin(np.sum(LSM, 1)), :], 0)==0)[0]
 	return pks
 

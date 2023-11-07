@@ -82,5 +82,32 @@ class TestLibrary(unittest.TestCase):
         with self.assertRaises(AssertionError):
             ampdlib.ampd_fast_sub(self.input_data, lsm_limit=2)    
 
+class TestOptimalSize(unittest.TestCase):
+    def test_assertions(self):
+        with self.assertRaises(AssertionError):
+            ampdlib.get_optimal_size(1000)
+        with self.assertRaises(AssertionError):
+            ampdlib.get_optimal_size(1000, -1)
+        with self.assertRaises(AssertionError):
+            ampdlib.get_optimal_size(1000, 2000)
+        with self.assertRaises(AssertionError):
+            ampdlib.get_optimal_size(1000, None, -1)
+        with self.assertRaises(AssertionError):
+            ampdlib.get_optimal_size(1000, None, 2)
+        with self.assertRaises(AssertionError):
+            ampdlib.get_optimal_size(1000, None, 1, -1)
+    
+    def test_scale(self):
+        scale, lsm, _ = ampdlib.get_optimal_size(1000, None, 0.1)
+        self.assertEqual(scale, 100)
+
+    def test_lsm(self):
+        scale, lsm, _ = ampdlib.get_optimal_size(1000, 100, None)
+        self.assertEqual(lsm, 0.1)
+
+    def test_warning(self):
+        with self.assertWarns(UserWarning):
+            scale, lsm, _ = ampdlib.get_optimal_size(1000, 1, None)
+
 if __name__ == "__main__":
     unittest.main()
