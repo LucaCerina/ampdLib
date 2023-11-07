@@ -58,7 +58,6 @@ def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
 	# Local minima extraction
 	for k in range(1, L):
 		LSM[k - 1, np.where((dtr_signal[k:N - k - 1] > dtr_signal[0: N - 2 * k - 1]) & (dtr_signal[k:N - k - 1] > dtr_signal[2 * k: N - 1]))[0]+k] = 0
-	print(LSM.shape)
 	pks = np.where(np.sum(LSM[0:np.argmin(np.sum(LSM, 1)), :], 0)==0)[0]
 	return pks
 
