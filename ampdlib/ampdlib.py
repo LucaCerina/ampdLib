@@ -10,7 +10,10 @@ An Efficient Algorithm for Automatic Peak Detection in Noisy Periodic and Quasi-
 by Felix Scholkmann, Jens Boss and Martin Wolf, Algorithms 2012, 5, 588-603.
 """
 
+import warnings
+
 import numpy as np
+
 
 # AMPD function
 def ampd(sig_input:np.ndarray, lsm_limit:float = 1) -> np.ndarray:
@@ -93,11 +96,11 @@ def ampd_fast_sub(sig_input:np.ndarray, order:int = 1, lsm_limit:float = 1, verb
 	# Check if order is valid (perfectly separable)
 	if(len(sig_input)%order != 0):
 		if verbose:
-			print("AMPD: Invalid order, decreasing order")
+			warnings.warn("AMPD: Invalid order, decreasing order")
 		while(len(sig_input)%order != 0):
 			order -= 1
 		if verbose:
-			print("AMPD: Using order " + str(order))
+			warnings.warn("AMPD: Using order " + str(order))
 
 	N = int(len(sig_input) / order / 2)
 

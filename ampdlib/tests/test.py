@@ -56,6 +56,16 @@ class TestLibrary(unittest.TestCase):
         error_peaks = np.sum((ampd_peaks - self.real_peaks[0:ampd_peaks.shape[0]]) != 0)
         self.assertEqual(error_peaks, 0)
 
+    def test_large_window_length(self):
+        ampd_peaks = ampdlib.ampd_fast(self.input_data, window_length=len(self.input_data)+1)
+        error_peaks = np.sum((ampd_peaks - self.real_peaks[0:ampd_peaks.shape[0]]) != 0)
+        self.assertEqual(error_peaks, 0)
+
+    def test_order_warnings(self):
+        input_data = self.input_data[:1282]
+        with self.assertWarns(UserWarning):
+            ampdlib.ampd_fast_sub(input_data, order=4, verbose=True)
+
     def test_assertions(self):
         with self.assertRaises(AssertionError):
             ampdlib.ampd(self.input_data, lsm_limit=-1)
@@ -67,6 +77,10 @@ class TestLibrary(unittest.TestCase):
             ampdlib.ampd_fast(self.input_data, 2000, -1)
         with self.assertRaises(AssertionError):
             ampdlib.ampd_fast(self.input_data, 2000, 2100)
+        with self.assertRaises(AssertionError):
+            ampdlib.ampd_fast_sub(self.input_data, order=0)
+        with self.assertRaises(AssertionError):
+            ampdlib.ampd_fast_sub(self.input_data, lsm_limit=2)    
 
 if __name__ == "__main__":
     unittest.main()
