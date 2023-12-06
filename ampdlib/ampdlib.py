@@ -12,6 +12,7 @@ by Felix Scholkmann, Jens Boss and Martin Wolf, Algorithms 2012, 5, 588-603.
 
 from typing import Any, Tuple
 import warnings
+import multiprocessing
 
 import numpy as np
 
@@ -206,3 +207,63 @@ def ampd_fast(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_
 	pks = np.unique(pks)
 	
 	return pks
+
+# %% ampd even faster using multiprocessing
+def ampd_pool(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_limit:float=1, verbose:bool = False) -> np.ndarray:
+    """An even faster version of AMPD which instead of iterating a large signal with windows, the windows are processed in parallel
+	
+        Parameters
+        ----------
+        sig_input: ndarray
+            The 1D signal given as input to the algorithm
+        window_length: int
+            The dimension of the window in samples
+        hop_length: int
+            The step between windows. Defaults to window_length
+        lsm_limit: float
+            Wavelet transform limit as a ratio of full signal length.
+            Valid values: 0-1, the LSM array will no longer be calculated after this point
+                which results in the inability to find peaks at a scale larger than this factor.
+                For example a value of .5 will be unable to find peaks that are of period 
+                1/2 * signal length, a default value of 1 will search all LSM sizes.
+        verbose: bool
+            Enable verbosity while parsing sectors, does not work with multiprocessing
+        Returns
+        -------
+        pks: ndarray
+            The ordered array of peaks found in sigInput 
+    """
+
+    # Assertion checks
+    assert 0 < lsm_limit <= 1, 'lsm_limit should be comprised between 0 and 1'
+    assert (hop_length is None) or (hop_length < window_length and hop_length > 0), 'hop_length should be smaller than window_length and larger than 0'
+
+    # Define iterations
+    if window_length < sig_input.shape[0]:
+        if hop_length is None:
+            hop_length = window_length
+        iterations = int((sig_input.shape[0] - window_length) // hop_length) + 1
+    else:
+        window_length = sig_input.shape[0]
+        hop_length = window_length
+        iterations = 1
+        
+
+    # create the arguments for the pool
+    args = [(sig_input[(i*hop_length):((i+1)*hop_length + window_length)], lsm_limit) for i in range(iterations)]
+
+	# create a pool of workers using the with statement
+    with multiprocessing.Pool() as pool:
+		# map the function to the arguments
+        pks = pool.starmap(ampd, args)
+
+    # concatenate the results, but first add the offset
+    for i in range(iterations):
+        pks[i] = pks[i] + i*hop_length
+
+    pks = np.concatenate(pks)
+
+    # Keep only unique values
+    pks = np.unique(pks)
+
+    return pks
