@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__      = "Luca Cerina"
 __copyright__   = "Copyright 2023, Luca Cerina"
-__credits__     = ["Jeremy Karst", "Steffen Kaiser"]
+__credits__     = ["Jeremy Karst", "Steffen Kaiser", "Hans van Gorp"]
 __email__       = "lccerina@gmail.com"
 
 """
@@ -209,7 +209,7 @@ def ampd_fast(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_
 	return pks
 
 # %% ampd even faster using multiprocessing
-def ampd_pool(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_limit:float=1, verbose:bool = False) -> np.ndarray:
+def ampd_pool(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_limit:float=1, verbose:bool = False, nr_workers:int=None) -> np.ndarray:
     """An even faster version of AMPD which instead of iterating a large signal with windows, the windows are processed in parallel
 	
         Parameters
@@ -227,7 +227,9 @@ def ampd_pool(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_
                 For example a value of .5 will be unable to find peaks that are of period 
                 1/2 * signal length, a default value of 1 will search all LSM sizes.
         verbose: bool
-            Enable verbosity while parsing sectors, does not work with multiprocessing
+            Enable verbosity that will print the number of workers used
+		nr_workers: int
+			The number of workers to be used. Defaults to None, which will use the maximum number of workers available
         Returns
         -------
         pks: ndarray
@@ -237,6 +239,7 @@ def ampd_pool(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_
     # Assertion checks
     assert 0 < lsm_limit <= 1, 'lsm_limit should be comprised between 0 and 1'
     assert (hop_length is None) or (hop_length < window_length and hop_length > 0), 'hop_length should be smaller than window_length and larger than 0'
+    assert (nr_workers is None) or (nr_workers <= multiprocessing.cpu_count() and nr_workers > 0), 'nr_workers should be smaller than the number of available CPUs and larger than 0'
 
     # Define iterations
     if window_length < sig_input.shape[0]:
@@ -252,8 +255,15 @@ def ampd_pool(sig_input:np.ndarray, window_length:int, hop_length:int=None, lsm_
     # create the arguments for the pool
     args = [(sig_input[(i*hop_length):((i+1)*hop_length + window_length)], lsm_limit) for i in range(iterations)]
 
+	# set the number of workers
+    if nr_workers is None:
+        nr_workers = multiprocessing.cpu_count()
+
+    if verbose:
+        print(f"Using {nr_workers} workers")
+
 	# create a pool of workers using the with statement
-    with multiprocessing.Pool() as pool:
+    with multiprocessing.Pool(processes=nr_workers) as pool:
 		# map the function to the arguments
         pks = pool.starmap(ampd, args)
 

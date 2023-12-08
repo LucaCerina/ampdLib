@@ -66,6 +66,11 @@ class TestLibrary(unittest.TestCase):
         with self.assertWarns(UserWarning):
             ampdlib.ampd_fast_sub(input_data, order=4, verbose=True)
 
+    def test_pool(self):
+        ampd_peaks = ampdlib.ampd_pool(self.input_data, window_length=2000, hop_length=1000, verbose=True)
+        error_peaks = np.sum((ampd_peaks - self.real_peaks[0:ampd_peaks.shape[0]]) != 0)
+        self.assertEqual(error_peaks, 0)
+
     def test_assertions(self):
         with self.assertRaises(AssertionError):
             ampdlib.ampd(self.input_data, lsm_limit=-1)
@@ -80,7 +85,15 @@ class TestLibrary(unittest.TestCase):
         with self.assertRaises(AssertionError):
             ampdlib.ampd_fast_sub(self.input_data, order=0)
         with self.assertRaises(AssertionError):
-            ampdlib.ampd_fast_sub(self.input_data, lsm_limit=2)    
+            ampdlib.ampd_fast_sub(self.input_data, lsm_limit=2)  
+        with self.assertRaises(AssertionError):
+            ampdlib.ampd_pool(self.input_data, 2000, -1)  
+        with self.assertRaises(AssertionError):
+            ampdlib.ampd_pool(self.input_data, 2000, 2100)  
+        with self.assertRaises(AssertionError):
+            ampdlib.ampd_pool(self.input_data, 2000, lsm_limit=2)  
+        with self.assertRaises(AssertionError):
+            ampdlib.ampd_pool(self.input_data, 2000, nr_workers=0)                        
 
 class TestOptimalSize(unittest.TestCase):
     def test_assertions(self):
