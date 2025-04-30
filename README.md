@@ -3,6 +3,9 @@ Copyright (c) 2023 Luca Cerina.
 Distributed under the Apache 2.0 License in the accompanying file LICENSE.
 
 # Automatic Multiscale-based Peak Detection (AMPD)
+ARCHIVED to deter GitHub/Microsoft tracking and profiteering! Now available at https://codeberg.org/LucaCerina/ampdLib
+
+For details about leaving GitHub: https://sfconservancy.org/GiveUpGitHub/
 
 ampdLib implements automatic multiscale-based peak detection (AMPD) algorithm
 as in An Efficient Algorithm for Automatic Peak Detection in Noisy Periodic and
